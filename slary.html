@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>工资计算器</title>
+    <meta charset="UTF-8" http-equiv="X-UA-Compatible" name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <style>
+        body{
+            padding:10px;
+            box-sizing: border-box;
+        } 
+       div>select{
+           width:100%;
+           height:30px;
+           border-radius: 4px;
+           margin:10px 0;
+       }
+
+       div>input{
+           width:100%;
+           height:20px;
+           line-height: 20px;
+           border-radius: 4px;
+           margin:10px 0;
+       }
+       .box{
+           width:100%;
+           height:60px;
+           margin:10px 0;
+       }
+       .box>span{
+           line-height: 60px;
+           text-align: center;
+           color:#6f6e6e;
+           font-size: 20px;
+       }
+    </style>
+</head>
+
+<body>
+    <div>
+    <label for="type">门店角色</label>
+    <select id="type">
+        <option value='1' selected>店长</option>
+        <option value='2'>店员</option>
+    </select>
+</div>
+<div>
+     <label for="type">目标业绩</label>  
+     <input type="text" id="plankpi" value=0 placeholder="请输入整店目标业绩">
+</div>
+<div>
+    <label for="type">个人业绩</label>
+    <input type="text" id="kpi" value=0 placeholder="请输入实际个人业绩">
+</div>
+<div>
+    <label for="type">门店业绩</label>
+    <input type="text" id="storekpi" value=0 placeholder="请输入实际门店业绩">
+</div>
+<div>
+    <label for="type">门店人数</label>
+    <select id="people">
+        <option value=2 selected>2人</option>
+        <option value=3 >3人</option>
+    </select>
+</div>
+<label for="base_salary">基本工资</label>
+    <div class="box">
+        <span id="base_salary">0.00</span>
+    </div>
+<label for="personal_rate">个人提成</label>
+    <div class="box">
+        <span id="personal_rate">0.00</span>
+    </div>
+<label for="personal_reword">个人完成奖金</label>
+    <div class="box">
+        <span id="personal_reword">0.00</span>
+    </div>
+<label for="store_rate">门店整体提成</label>
+    <div class="box">
+        <span id="store_rate">0.00</span>
+    </div>   
+<label for="store_reword">门店团队奖金</label>
+    <div class="box">
+        <span id="store_reword">0.00</span>
+    </div>     
+<label for="salary">工资</label>
+    <div class="box">
+        <span id="salary">0.00</span>
+    </div>
+</body>
+<script>
+    class Salarycomputed {
+        constructor() {
+            this.averageSale = 0
+        }
+
+        //计算
+        computed(kpi, people, type, baseSalary ,planQuota,storekpi) {
+            
+            this.averageSale = kpi
+            //工资
+            var salery = 0
+            //个人销售提成 
+            var personSale
+            //达标奖励
+            var reward = 0
+            //整店销售提成
+            var storeSale
+            //团队奖金
+            var teamReward = 0
+            //提点
+            var personPercent
+            //个人完成率
+            var completion_rate = (this.averageSale / (planQuota / people))
+            //整店提点
+            var storePercent
+            //整店完成率
+            var store_completion_rate = (storekpi / planQuota)
+            switch (true) {
+                case completion_rate < 0.9:
+                    personPercent = 0.06
+                    break;
+                case completion_rate >= 0.9 && completion_rate <= 1:
+                    personPercent = 0.08
+                    break;
+                case completion_rate > 1 && completion_rate <= 1.2:
+                    personPercent = 0.1
+                    break;
+                case completion_rate > 1.2:
+                    personPercent = 0.12
+                    break;
+            }
+            
+                personSale = this.averageSale * personPercent
+            //实际销售达到目标的 奖励两百
+            if (completion_rate >= 1) {
+                reward = 200
+            }
+
+            switch (true) {
+                case store_completion_rate < 0.9:
+                        storePercent = 0
+                    break;
+                case store_completion_rate >= 0.9 && store_completion_rate <= 1:
+                        storePercent = 0.01
+                    break;
+                case store_completion_rate > 1 && store_completion_rate <= 1.2:
+                       storePercent = 0.015
+                    break;
+                case store_completion_rate > 1.2:
+                       storePercent = 0.02
+                    break;
+            }
+            //门店销售提成
+            storeSale = storePercent * kpi  
+
+            switch (true) {
+                case store_completion_rate >= 1 && store_completion_rate <= 1.09:
+                    teamReward = 500
+                    break;
+                case store_completion_rate >= 1.1 && store_completion_rate <= 1.19:
+                    teamReward = 600
+                    break;
+                case store_completion_rate >= 1.2 && store_completion_rate <= 1.29:
+                    teamReward = 700
+                    break;
+                case store_completion_rate >= 1.3 && store_completion_rate <= 1.39:
+                    teamReward = 800
+                    break;
+                case store_completion_rate >= 1.4 && store_completion_rate <= 1.49:
+                    teamReward = 900
+                    break;
+                case store_completion_rate >= 1.5 && store_completion_rate <= 1.59:
+                    teamReward = 1000
+                    break;
+                case store_completion_rate >= 1.6 && store_completion_rate <= 1.69:
+                    teamReward = 1100
+                    break;
+                case store_completion_rate >= 1.7 && store_completion_rate <= 1.79:
+                    teamReward = 1200
+                    break;
+                case store_completion_rate >= 1.8 && store_completion_rate <= 1.89:
+                    teamReward = 1300
+                    break;
+                case store_completion_rate >= 1.9 && store_completion_rate <= 2:
+                    teamReward = 1400
+                    break;
+                case store_completion_rate > 2:
+                    teamReward = 3000
+                    break;
+            }
+            if (type == 1) {
+                if (people == 2) {
+                    salery = personSale + reward + storeSale + (teamReward * 0.6)+baseSalary
+                    document.getElementById('store_reword').innerHTML = (teamReward*0.6).toFixed(2)
+                } else if (people == 3) {
+                    salery = personSale + reward + storeSale + (teamReward * 0.4)+baseSalary
+                    document.getElementById('store_reword').innerHTML = (teamReward*0.4).toFixed(2)
+                }
+                //console.log(`类型店长，个人提成:${personSale},个人提成奖励：${reward},门店提成${storeSale},门店提成奖励${teamReward * 0.6},`)
+            } else if (type == 2) {
+                if (people == 2) {
+                    salery = personSale + reward + (teamReward * 0.4)+baseSalary
+                    document.getElementById('store_reword').innerHTML = (teamReward*0.4).toFixed(2)
+                } else if (people == 3) {
+                    salery = personSale + reward + (teamReward * 0.3)+baseSalary
+                    document.getElementById('store_reword').innerHTML = (teamReward*0.3).toFixed(2)
+                }
+                //console.log(`类型店员，个人提成:${personSale},个人提成奖励：${reward},门店提成奖励${teamReward * 0.6},`)
+            } 
+              document.getElementById('base_salary').innerHTML = baseSalary.toFixed(2)
+              document.getElementById('personal_rate').innerHTML = personSale.toFixed(2)
+              document.getElementById('personal_reword').innerHTML = reward.toFixed(2)
+              document.getElementById('store_rate').innerHTML = storeSale.toFixed(2)
+              document.getElementById('salary').innerHTML = salery.toFixed(2)
+        }
+
+    }
+
+    var type = document.getElementById('type').value
+    var people = document.getElementById('people').value
+    var kpi = document.getElementById('kpi').value
+    var storekpi = document.getElementById('storekpi').value
+    //店长基本工资value
+    var baseSalary 
+    type == 1?baseSalary = 4000:baseSalary = 3500
+    //计划销售额
+    var planQuota = document.getElementById('plankpi').value
+
+    var Salary =  new Salarycomputed()
+    document.getElementById('base_salary').innerHTML = baseSalary
+    document.getElementById('type').onchange = () => {
+        type = document.getElementById('type').value //1 店长 2 店员
+        type == 1?baseSalary = 3500:baseSalary = 3000
+        Salary.computed(kpi, people, type, baseSalary, planQuota,storekpi)
+    }
+
+    document.getElementById('people').onchange = () => {
+        people = document.getElementById('people').value
+        Salary.computed(kpi, people, type, baseSalary, planQuota,storekpi)
+    }
+
+    document.getElementById('kpi').oninput = () => {
+        kpi = document.getElementById('kpi').value
+        Salary.computed(kpi, people, type, baseSalary, planQuota,storekpi)
+    }
+
+    document.getElementById('storekpi').oninput = ()=>{
+        storekpi = document.getElementById('storekpi').value
+        Salary.computed(kpi, people, type, baseSalary, planQuota,storekpi)
+    }
+
+    document.getElementById('plankpi').oninput = ()=>{
+        planQuota = document.getElementById('plankpi').value
+        Salary.computed(kpi, people, type, baseSalary, planQuota,storekpi)
+    }
+
+</script>
+
+</html>
