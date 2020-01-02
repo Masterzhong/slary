@@ -87,9 +87,6 @@
 </body>
 <script>
     class Salarycomputed {
-        constructor() {
-            this.averageSale = 0
-        }
 
         //计算
         computed(kpi, people, type, baseSalary ,planQuota,storekpi) {   
@@ -105,12 +102,11 @@
             var storePercent = 0
             //整店完成率
             var store_completion_rate = (storekpi / planQuota)
-             console.log(store_completion_rate)
             //个人提成
             if(type == 1){
                 personSale = (storekpi/people) * personPercent
             }else{
-                personSale = this.averageSale * personPercent
+                personSale = kpi * personPercent
             }
             
 
