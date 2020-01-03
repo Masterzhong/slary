@@ -111,7 +111,7 @@
             
 
             switch (true) {
-                case store_completion_rate >= 0.81 && store_completion_rate <= 1:
+               /*  case store_completion_rate >= 0.81 && store_completion_rate <= 1:
                      storePercent = 0.01
                     break;
                 case store_completion_rate >= 1.1 && store_completion_rate <= 1.2:
@@ -119,6 +119,24 @@
                     break;
                 case store_completion_rate > 1.2:
                        storePercent = 0.03
+                    break; */
+                    case store_completion_rate > 1:
+                     storePercent = 0.03
+                    break;
+                    case store_completion_rate <= 1&&store_completion_rate > 0.9:
+                     storePercent = 0.025
+                    break;
+                    case store_completion_rate <= 0.9&&store_completion_rate > 0.8:
+                     storePercent = 0.02
+                    break;
+                    case store_completion_rate <= 0.8&&store_completion_rate > 0.7:
+                     storePercent = 0.015
+                    break;
+                    case store_completion_rate <= 0.7&&store_completion_rate >= 0.6:
+                     storePercent = 0.01
+                    break;
+                    case store_completion_rate < 0.6:
+                     storePercent = 0
                     break;
             }
             //门店销售提成
